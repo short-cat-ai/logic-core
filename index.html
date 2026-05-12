@@ -3,149 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVALUACIÓN DE INGENIERÍA - NEÓN</title>
+    <title>TERMINAL DE EVALUACIÓN - V.2026</title>
     <style>
         :root { 
-            --neon-yellow: #ccff00; 
-            --dark-bg: #080808; 
-            --glow: 0 0 10px rgba(204, 255, 0, 0.4);
+            --neon: #ccff00; 
+            --bg: #050505; 
+            --glow: 0 0 15px rgba(204, 255, 0, 0.5);
         }
-        
-        body { 
-            background-color: var(--dark-bg); 
-            color: var(--neon-yellow); 
-            font-family: 'Courier New', Courier, monospace; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px; 
-        }
-
-        .terminal { 
-            max-width: 800px; 
-            width: 100%; 
-            border: 2px solid var(--neon-yellow); 
-            padding: 35px; 
-            position: relative; 
-            box-shadow: var(--glow), inset var(--glow);
-            background: rgba(204, 255, 0, 0.02);
-        }
-
-        .terminal::before { 
-            content: "SISTEMA_UNIFICADO_DE_EVALUACIÓN"; 
-            position: absolute; 
-            top: -12px; 
-            left: 20px; 
-            background: var(--dark-bg); 
-            padding: 0 10px; 
-            font-size: 0.8rem; 
-            letter-spacing: 2px;
-            font-weight: bold;
-        }
-
-        h1 { 
-            font-size: 1.2rem; 
-            border-bottom: 1px solid var(--neon-yellow); 
-            padding-bottom: 12px; 
-            margin-bottom: 25px; 
-            text-transform: uppercase;
-            text-shadow: var(--glow);
-        }
-
-        .question { 
-            line-height: 1.6; 
-            margin-bottom: 20px; 
-            color: #ffffff; /* Texto blanco para que sea legible, resaltando lo importante en neón */
-        }
-
-        .question strong { 
-            color: var(--neon-yellow); 
-            text-shadow: 0 0 5px rgba(204, 255, 0, 0.5);
-        }
-        
-        .logic-input { 
-            width: 100%; 
-            background: #000; 
-            border: 1px solid var(--neon-yellow); 
-            color: var(--neon-yellow); 
-            padding: 18px; 
-            font-family: 'Consolas', 'Monaco', monospace; 
-            height: 200px; 
-            box-sizing: border-box;
-            outline: none;
-            resize: none;
-            box-shadow: inset 0 0 5px rgba(204, 255, 0, 0.2);
-        }
-
-        .btn { 
-            display: inline-block; 
-            width: 100%; 
-            background: var(--neon-yellow); 
-            color: #000; 
-            border: none; 
-            padding: 18px; 
-            margin-top: 25px; 
-            cursor: pointer; 
-            font-weight: 1000; 
-            text-align: center; 
-            text-decoration: none; 
-            transition: 0.3s; 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 1rem;
-        }
-
-        .btn:hover { 
-            background: #fff; 
-            box-shadow: 0 0 40px var(--neon-yellow); 
-            transform: scale(1.01);
-        }
-
-        .footer-note { 
-            color: #555; 
-            font-size: 0.7rem; 
-            margin-top: 25px; 
-            text-align: center;
-            border-top: 1px solid #222;
-            padding-top: 15px;
-            letter-spacing: 1px;
-        }
-
-        /* Estilo para el cursor parpadeante tipo terminal */
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 1.2rem;
-            background: var(--neon-yellow);
-            animation: blink 1s infinite;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
+        body { background-color: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; overflow-x: hidden; }
+        .terminal { max-width: 800px; width: 100%; border: 2px solid var(--neon); padding: 40px; position: relative; box-shadow: var(--glow), inset 0 0 20px rgba(204, 255, 0, 0.1); background: linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(20,20,20,1) 100%); }
+        .terminal::before { content: "[SISTEMA_CRÍTICO_NIVEL_7]"; position: absolute; top: -12px; left: 20px; background: var(--bg); padding: 0 15px; font-weight: bold; letter-spacing: 2px; font-size: 0.9rem; }
+        h1 { font-size: 1.3rem; border-bottom: 2px solid var(--neon); padding-bottom: 15px; margin-bottom: 30px; text-transform: uppercase; text-shadow: var(--glow); }
+        .question { line-height: 1.7; margin-bottom: 25px; color: #fff; font-size: 1rem; }
+        .question b { color: var(--neon); text-shadow: 0 0 5px var(--neon); }
+        .logic-input { width: 100%; background: #000; border: 1px solid var(--neon); color: var(--neon); padding: 20px; font-family: 'Consolas', monospace; height: 220px; box-sizing: border-box; outline: none; resize: none; font-size: 0.95rem; }
+        .btn { display: inline-block; width: 100%; background: var(--neon); color: #000; border: none; padding: 20px; margin-top: 30px; cursor: pointer; font-weight: 900; text-align: center; text-decoration: none; transition: 0.4s; text-transform: uppercase; letter-spacing: 3px; font-size: 1.1rem; }
+        .btn:hover { background: #fff; box-shadow: 0 0 50px var(--neon); transform: translateY(-3px); }
+        .footer { color: #444; font-size: 0.75rem; margin-top: 30px; text-align: center; border-top: 1px solid #222; padding-top: 20px; }
+        .scanline { width: 100%; height: 2px; background: rgba(204, 255, 0, 0.05); position: absolute; top: 0; left: 0; pointer-events: none; animation: scan 4s linear infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
     </style>
 </head>
 <body>
-
+    <div class="scanline"></div>
     <div class="terminal">
-        <h1>> PRUEBA_INGENIERÍA_SISTÉMICA // CICLO_VII <span class="cursor"></span></h1>
-        
+        <h1>> ANÁLISIS_DE_ANOMALÍAS_OPERATIVAS...</h1>
         <div class="question">
-            <p><strong>CONTEXTO:</strong> Estás a cargo de la integración de suministros en un proyecto de gran escala. Recibes datos de 3 fuentes distintas con unidades de medida no estandarizadas y formatos inconsistentes.</p>
-            <p><strong>EL RETO:</strong> Describe la lógica de un sistema que automatice la detección de errores en las unidades (ej. detectar si alguien envió 'toneladas' en lugar de 'kg') antes de que impacte en los costos. ¿Qué reglas de validación técnica pondrías como filtro obligatorio?</p>
-            <p><em>*Buscamos pensamiento estructurado y capacidad de prevenir fallos críticos.</em></p>
+            <p><b>ESCENARIO:</b> Dos facturas llegan por el mismo material e importe total. Proveedor A marca <b>10,000 unidades</b>. Proveedor B marca <b>10 unidades</b>. El sistema automático no da alerta porque el presupuesto cuadra.</p>
+            <p><b>EL RETO:</b> Diseña una lógica de control que no dependa del nombre de la unidad. ¿Qué <u>correlación de variables</u> (ej. Peso vs. Precio o Densidad vs. Volumen) usarías para que el sistema detecte que una de las dos facturas es un error crítico o un fraude?</p>
+            <p><i>*Nota: Evita respuestas genéricas. Queremos ver tu criterio de ingeniería aplicado a la prevención de pérdidas.</i></p>
         </div>
 
-        <textarea class="logic-input" placeholder="Escribe tu protocolo de solución aquí..."></textarea>
+        <textarea class="logic-input" placeholder="Ingresa tu lógica de validación cruzada aquí..."></textarea>
         
-        <a href="TU_LINK_DE_GOOGLE_FORMS" class="btn">ENVIAR ANÁLISIS Y CV</a>
+        <a href="LINK_DE_TU_FORMULARIO" class="btn">ENVIAR DIAGNÓSTICO</a>
 
-        <div class="footer-note">
-            [IDENTIFICADOR_PROCESO: LIMA_2026_EST_ING]
+        <div class="footer">
+            SISTEMA DE RECLUTAMIENTO // LIMA-PERÚ // 2026
         </div>
     </div>
 </body>
