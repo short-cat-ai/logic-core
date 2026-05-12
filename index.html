@@ -10,6 +10,7 @@
             --bg: #050505; 
             --glow: 0 0 15px rgba(204, 255, 0, 0.5);
             --disabled: #1a1a1a;
+            --error: #ff3300;
         }
 
         body { 
@@ -36,7 +37,7 @@
         }
 
         .terminal::before { 
-            content: "[COLOCA TU RESPUESTA EN EL ESPACIO EN BLANCO]"; 
+            content: "[SISTEMA DE ACCESO RESTRINGIDO]"; 
             position: absolute; 
             top: -12px; 
             left: 20px; 
@@ -54,6 +55,7 @@
             margin-bottom: 25px; 
             text-transform: uppercase;
             text-shadow: var(--glow);
+            text-align: center;
         }
 
         .problem-box { 
@@ -70,6 +72,9 @@
         .input-area { 
             text-align: center; 
             margin-top: 30px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .math-input { 
@@ -83,30 +88,36 @@
             text-align: center; 
             outline: none; 
             box-shadow: inset 0 0 10px rgba(204, 255, 0, 0.2);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        /* Botón Bloqueado */
+        .math-input:disabled {
+            border-color: var(--error);
+            color: var(--error);
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .btn { 
             display: block; 
-            width: 100%; 
+            width: 90%; /* Ajustado para mejor balance */
             background: var(--disabled); 
             color: #444; 
             border: none; 
-            padding: 22px; 
-            margin-top: 20px; 
+            padding: 20px; 
+            margin: 25px auto 0 auto; /* CENTRADO DINÁMICO */
             text-align: center; 
             text-decoration: none; 
             font-weight: 900; 
             text-transform: uppercase; 
             letter-spacing: 3px; 
             cursor: not-allowed; 
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            transition: 0.4s; 
             pointer-events: none;
             font-size: 1rem;
+            box-sizing: border-box;
         }
 
-        /* Botón Desbloqueado */
         .btn.unlocked { 
             background: var(--neon); 
             color: #000; 
@@ -115,9 +126,10 @@
             box-shadow: 0 0 30px var(--neon);
         }
 
-        .btn.unlocked:hover { 
-            background: #fff; 
-            transform: scale(1.02);
+        .btn.error-mode {
+            background: var(--error);
+            color: #fff;
+            box-shadow: 0 0 20px var(--error);
         }
 
         .hint-neon { 
@@ -132,41 +144,23 @@
         }
 
         @keyframes pulse-neon {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.98); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         #feedback {
             height: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             margin-bottom: 10px;
             font-weight: bold;
-        }
-
-        .scanline {
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(0deg, rgba(204, 255, 0, 0.03) 0%, rgba(204, 255, 0, 0) 100%);
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            pointer-events: none;
-            animation: scan 6s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { bottom: 100%; }
-            100% { bottom: -100px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="scanline"></div>
-
     <div class="terminal">
-        <h1>> RETO</h1>
+        <h1>> RETO_LOGÍSTICO_V.26</h1>
         
         <div class="problem-box">
             <p>Una constructora en Lima requiere <b>5,000 unidades</b> de un insumo al mes.</p>
@@ -174,7 +168,7 @@
                 <li>Costo de gestión por pedido: <b>S/ 200</b></li>
                 <li>Costo de almacenamiento: <b>S/ 5 por unidad al mes</b></li>
             </ul>
-            <p><b>PROBLEMA:</b> Aplicando el modelo de Lote Económico (EOQ), calcula cuántas unidades se deben pedir por orden para minimizar el costo total anual.</p>
+            <p><b>PROBLEMA:</b> Aplicando el modelo de Lote Económico (EOQ), calcula el tamaño óptimo de pedido (unidades).</p>
             <p><i>(Ingresa el número entero más cercano)</i></p>
         </div>
 
@@ -184,8 +178,8 @@
             
             <a href="TU_LINK_DE_GOOGLE_FORMS" id="submitBtn" class="btn">SISTEMA BLOQUEADO</a>
             
-            <div class="hint-neon">
-                [!] INGRESA EL RESULTADO CORRECTO PARA ACCEDER AL FORMULARIO Y SUBIR TU CV
+            <div id="hint" class="hint-neon">
+                TIENES 3 INTENTOS PARA DESBLOQUEAR EL ACCESO
             </div>
         </div>
     </div>
@@ -194,29 +188,77 @@
         const input = document.getElementById('mathAnswer');
         const btn = document.getElementById('submitBtn');
         const feedback = document.getElementById('feedback');
+        const hint = document.getElementById('hint');
         
-        // La respuesta correcta es 632
-        // sqrt((2 * 5000 * 200) / 5) = 632.45
         const secretCode = 632;
+        const MAX_ATTEMPTS = 3;
+        const LOCK_TIME = 24 * 60 * 60 * 1000; 
 
-        input.addEventListener('input', () => {
-            const val = parseInt(input.value);
+        function checkLockStatus() {
+            const lockUntil = localStorage.getItem('lockUntil');
+            const attempts = parseInt(localStorage.getItem('attempts') || 0);
+
+            if (lockUntil && Date.now() < parseInt(lockUntil)) {
+                const remainingHours = Math.ceil((parseInt(lockUntil) - Date.now()) / (1000 * 60 * 60));
+                lockSystem(`SISTEMA BLOQUEADO POR SEGURIDAD. REGRESA EN ${remainingHours}H.`);
+                return true;
+            }
+
+            if (lockUntil && Date.now() >= parseInt(lockUntil)) {
+                localStorage.removeItem('lockUntil');
+                localStorage.setItem('attempts', 0);
+            }
             
+            updateHint(attempts);
+            return false;
+        }
+
+        function lockSystem(message) {
+            input.disabled = true;
+            btn.classList.add('error-mode');
+            btn.innerText = "ACCESO DENEGADO";
+            feedback.innerText = message;
+            feedback.style.color = "var(--error)";
+            hint.style.display = "none";
+        }
+
+        function updateHint(attempts) {
+            const remaining = MAX_ATTEMPTS - attempts;
+            hint.innerText = `INTENTOS RESTANTES: ${remaining}`;
+            if (remaining <= 1) hint.style.color = "var(--error)";
+        }
+
+        input.addEventListener('change', () => {
+            if (checkLockStatus()) return;
+
+            const val = parseInt(input.value);
+            let attempts = parseInt(localStorage.getItem('attempts') || 0);
+
             if (val === secretCode) {
+                btn.classList.remove('error-mode');
                 btn.classList.add('unlocked');
                 btn.innerText = "ACCESO CONCEDIDO - CLIC AQUÍ";
-                feedback.innerText = "✓ RESULTADO VÁLIDO. IDENTIDAD CONFIRMADA.";
+                feedback.innerText = "✓ VALIDACIÓN EXITOSA.";
                 feedback.style.color = "var(--neon)";
-            } else if (!isNaN(val)) {
-                btn.classList.remove('unlocked');
-                btn.innerText = "SISTEMA BLOQUEADO";
-                feedback.innerText = "× VALOR INCORRECTO. RECALCULANDO...";
-                feedback.style.color = "#ff3300";
+                localStorage.setItem('attempts', 0); 
             } else {
-                feedback.innerText = "";
-                btn.innerText = "SISTEMA BLOQUEADO";
+                attempts++;
+                localStorage.setItem('attempts', attempts);
+                
+                if (attempts >= MAX_ATTEMPTS) {
+                    const lockTime = Date.now() + LOCK_TIME;
+                    localStorage.setItem('lockUntil', lockTime);
+                    lockSystem("LÍMITE ALCANZADO. BLOQUEO DE 24 HORAS.");
+                } else {
+                    feedback.innerText = "× VALOR INCORRECTO.";
+                    feedback.style.color = "var(--error)";
+                    updateHint(attempts);
+                    input.value = ""; // Limpiar para el siguiente intento
+                }
             }
         });
+
+        checkLockStatus();
     </script>
 
 </body>
