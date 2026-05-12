@@ -3,44 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TERMINAL DE EVALUACIÓN - V.2026</title>
+    <title>SISTEMA DE EVALUACIÓN TÉCNICA</title>
     <style>
-        :root { 
-            --neon: #ccff00; 
-            --bg: #050505; 
-            --glow: 0 0 15px rgba(204, 255, 0, 0.5);
+        :root { --neon: #ccff00; --bg: #050505; --glow: 0 0 15px rgba(204, 255, 0, 0.5); }
+        body { background-color: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; }
+        .terminal { max-width: 600px; width: 100%; border: 2px solid var(--neon); padding: 40px; box-shadow: var(--glow); background: #000; position: relative; }
+        .terminal::before { content: "[AUTENTICACIÓN_DE_INGENIERÍA]"; position: absolute; top: -12px; left: 20px; background: var(--bg); padding: 0 10px; font-size: 0.8rem; font-weight: bold; }
+        h1 { font-size: 1.2rem; border-bottom: 2px solid var(--neon); padding-bottom: 15px; margin-bottom: 25px; text-transform: uppercase; }
+        .problem { line-height: 1.6; margin-bottom: 25px; color: #fff; background: rgba(204, 255, 0, 0.05); padding: 20px; border-left: 3px solid var(--neon); }
+        .problem b { color: var(--neon); }
+        .input-group { text-align: center; margin-top: 20px; }
+        .math-input { 
+            background: #000; border: 1px solid var(--neon); color: var(--neon); 
+            padding: 15px; font-family: 'Consolas', monospace; width: 150px; 
+            font-size: 1.5rem; text-align: center; outline: none; margin-bottom: 10px;
         }
-        body { background-color: var(--bg); color: var(--neon); font-family: 'Courier New', monospace; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; overflow-x: hidden; }
-        .terminal { max-width: 800px; width: 100%; border: 2px solid var(--neon); padding: 40px; position: relative; box-shadow: var(--glow), inset 0 0 20px rgba(204, 255, 0, 0.1); background: linear-gradient(180deg, rgba(10,10,10,1) 0%, rgba(20,20,20,1) 100%); }
-        .terminal::before { content: "[SISTEMA_CRÍTICO_NIVEL_7]"; position: absolute; top: -12px; left: 20px; background: var(--bg); padding: 0 15px; font-weight: bold; letter-spacing: 2px; font-size: 0.9rem; }
-        h1 { font-size: 1.3rem; border-bottom: 2px solid var(--neon); padding-bottom: 15px; margin-bottom: 30px; text-transform: uppercase; text-shadow: var(--glow); }
-        .question { line-height: 1.7; margin-bottom: 25px; color: #fff; font-size: 1rem; }
-        .question b { color: var(--neon); text-shadow: 0 0 5px var(--neon); }
-        .logic-input { width: 100%; background: #000; border: 1px solid var(--neon); color: var(--neon); padding: 20px; font-family: 'Consolas', monospace; height: 220px; box-sizing: border-box; outline: none; resize: none; font-size: 0.95rem; }
-        .btn { display: inline-block; width: 100%; background: var(--neon); color: #000; border: none; padding: 20px; margin-top: 30px; cursor: pointer; font-weight: 900; text-align: center; text-decoration: none; transition: 0.4s; text-transform: uppercase; letter-spacing: 3px; font-size: 1.1rem; }
-        .btn:hover { background: #fff; box-shadow: 0 0 50px var(--neon); transform: translateY(-3px); }
-        .footer { color: #444; font-size: 0.75rem; margin-top: 30px; text-align: center; border-top: 1px solid #222; padding-top: 20px; }
-        .scanline { width: 100%; height: 2px; background: rgba(204, 255, 0, 0.05); position: absolute; top: 0; left: 0; pointer-events: none; animation: scan 4s linear infinite; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .btn { 
+            display: block; width: 100%; background: #222; color: #444; 
+            border: none; padding: 20px; margin-top: 20px; text-align: center; 
+            text-decoration: none; font-weight: 900; text-transform: uppercase; 
+            letter-spacing: 2px; cursor: not-allowed; transition: 0.3s; pointer-events: none;
+        }
+        .btn.unlocked { 
+            background: var(--neon); color: #000; cursor: pointer; 
+            pointer-events: auto; box-shadow: var(--glow);
+        }
+        .hint { font-size: 0.7rem; color: #444; margin-top: 10px; }
     </style>
 </head>
 <body>
-    <div class="scanline"></div>
+
     <div class="terminal">
-        <h1>> ANÁLISIS_DE_ANOMALÍAS_OPERATIVAS...</h1>
-        <div class="question">
-            <p><b>ESCENARIO:</b> Dos facturas llegan por el mismo material e importe total. Proveedor A marca <b>10,000 unidades</b>. Proveedor B marca <b>10 unidades</b>. El sistema automático no da alerta porque el presupuesto cuadra.</p>
-            <p><b>EL RETO:</b> Diseña una lógica de control que no dependa del nombre de la unidad. ¿Qué <u>correlación de variables</u> (ej. Peso vs. Precio o Densidad vs. Volumen) usarías para que el sistema detecte que una de las dos facturas es un error crítico o un fraude?</p>
-            <p><i>*Nota: Evita respuestas genéricas. Queremos ver tu criterio de ingeniería aplicado a la prevención de pérdidas.</i></p>
+        <h1>> RETO_MATEMÁTICO_LOGÍSTICO...</h1>
+        
+        <div class="problem">
+            <p>Un proyecto requiere <b>5,000 unidades</b> de un material al mes.</p>
+            <ul>
+                <li>Costo de realizar un pedido: <b>S/ 200</b></li>
+                <li>Costo de mantener 1 unidad en stock: <b>S/ 5 al mes</b></li>
+            </ul>
+            <p><b>RETO:</b> Calcula el Lote Económico de Compra (EOQ) para minimizar el costo total. ¿Cuántas unidades debe tener cada pedido? (Redondear al entero más cercano).</p>
         </div>
 
-        <textarea class="logic-input" placeholder="Ingresa tu lógica de validación cruzada aquí..."></textarea>
-        
-        <a href="LINK_DE_TU_FORMULARIO" class="btn">ENVIAR DIAGNÓSTICO</a>
-
-        <div class="footer">
-            SISTEMA DE RECLUTAMIENTO // LIMA-PERÚ // 2026
+        <div class="input-group">
+            <input type="number" id="mathAnswer" class="math-input" placeholder="000">
+            <p id="feedback" style="font-size: 0.8rem; height: 15px;"></p>
+            <a href="TU_LINK_DE_GOOGLE_FORMS" id="submitBtn" class="btn">ACCESO BLOQUEADO</a>
+            <div class="hint">INGRESA EL RESULTADO CORRECTO PARA DESBLOQUEAR EL FORMULARIO Y SUBIR TU CV.</div>
         </div>
     </div>
+
+    <script>
+        const input = document.getElementById('mathAnswer');
+        const btn = document.getElementById('submitBtn');
+        const feedback = document.getElementById('feedback');
+        
+        // Respuesta correcta: 632
+        const correctResult = 632;
+
+        input.addEventListener('input', () => {
+            const val = parseInt(input.value);
+            
+            if (val === correctResult) {
+                btn.classList.add('unlocked');
+                btn.innerText = "ACCESO CONCEDIDO - CLIC AQUÍ";
+                feedback.innerText = "VALOR CORRECTO. SISTEMA ABIERTO.";
+                feedback.style.color = "var(--neon)";
+            } else {
+                btn.classList.remove('unlocked');
+                btn.innerText = "ACCESO BLOQUEADO";
+                feedback.innerText = "";
+            }
+        });
+    </script>
+
 </body>
 </html>
